@@ -1,7 +1,7 @@
 import React from "react";
+import { MdOutlineSchedule } from "react-icons/md";
 
-
-function ProviderSingle({details}){
+function ProviderSingle({details, onSelectProvider}){
     return (
         <div className="search-single">
             <h2>{details.provider_name}</h2>
@@ -10,6 +10,10 @@ function ProviderSingle({details}){
             <p>{details.location.street_address}</p>
             <p>{details.location.city}</p>
             <p>{details.location.state + " " + details.location.zip}</p>
+            <button onClick={(()=> onSelectProvider(details))}>
+                <MdOutlineSchedule />
+                </button>
+
         </div>
     )
 }

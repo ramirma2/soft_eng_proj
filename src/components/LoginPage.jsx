@@ -3,7 +3,7 @@ import Login from './Login';
 import SignUp from './SignUp';
 
 
-function LoginPage(){
+function LoginPage({setUser, setUserDetails}){
 
     const [loginView, setLoginView] = useState(true);
 
@@ -13,7 +13,8 @@ function LoginPage(){
             {
                 loginView ? 
                 <div>
-                <Login/>
+                <Login setUser={setUser}
+                        setUserDetails={setUserDetails}/>
                     <p className='smalltext default'
                     onClick={e=>{
                         setLoginView(false)
@@ -21,7 +22,7 @@ function LoginPage(){
                 </div>
                 :
                 <div>
-                <SignUp/>
+                <SignUp setUser={setUser}/>
                     <p className='smalltext default'
                     onClick={e=>{
                         setLoginView(true)

@@ -1,25 +1,37 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-
-function SignUp(){
+function SignUp({setUser, setUserDetails}){
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const history = useNavigate();
 
-    const submitHandler = (e) =>{
-        e.preventDefault();
-        alert(`Account successfully created! Let's start with your intake form, you can always save it and come back later to finish or edit.`)
-        history("/patient-intake");
+    const handleSubmit = async () => {
+        const details = {new_user:true, username, password}
+
+        try{
+            const url = 'http://127.0.0.1:8000/signup'
+            const response = await axios.post(url, details);
+            if(response.status == 200){
+                setUser(response.data.username)
+                alert ("User created!, You can start completing your profile. You can always save it and come back to finish it or edit it")
+                history('/patient-intake')
+            }else {
+                alert ("There was a problem adding this user")
+            }
+        }catch(error){
+            console.log('Error adding new user')
+        }
     }
+    
 
     return(
 
 
                 <form>
-                    <fieldset>
                     <label>Username:</label>
                     <input type="text" value={username}
                         onChange={e=> setUsername(e.target.value)}/>
@@ -30,10 +42,13 @@ function SignUp(){
                     <input type="password" value={confirmPassword}
                         onChange={e=>setConfirmPassword(e.target.value)}/>
                     <button
-                        onClick={
-                            submitHandler
+                        onClick={ e=>{
+                            e.preventDefault()
+                            handleSubmit()
+
+                        }
                         }>Create an Account</button>
-                    </fieldset> 
+
                 
                 </form>
 

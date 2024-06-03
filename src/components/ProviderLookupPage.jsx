@@ -1,15 +1,18 @@
-import React,{useState} from "react";
-import sample_providers from '../data/sample_providers';
-import ProvidersList from "./ProvidersList";
+import React,{useState} from "react"
+import sample_providers from '../data/sample_providers'
+import ProvidersList from "./ProvidersList"
+import { useNavigate } from "react-router-dom";
 
 
-function ProviderLookupPage(){
+function ProviderLookupPage({setCurrProvider, user}){
 
-    const [providerType, setProviderType] = useState("");
-    const [providerName, setProviderName] = useState("");
-    const [location, setLocation] = useState("");
-    const [insurance, setInsurance] = useState("");
-    const [providers, setProviders] = useState([]);
+    const [providerType, setProviderType] = useState("")
+    const [providerName, setProviderName] = useState("")
+    const [location, setLocation] = useState("")
+    const [insurance, setInsurance] = useState("")
+    const [providers, setProviders] = useState([])
+
+    const history = useNavigate()
 
 
     const findProvider =  () => {
@@ -30,6 +33,12 @@ function ProviderLookupPage(){
     const getProviders = () =>{
         const myProviders = findProvider()
         setProviders(myProviders)
+    }
+
+    const onSelectProvider = (provider) =>{
+        setCurrProvider(provider)
+        debugger
+        history("/schedule-appointment")
     }
 
     return(
@@ -65,7 +74,8 @@ function ProviderLookupPage(){
                 > Search Provider </button>
             </form>
             
-            <ProvidersList providers={providers}/>
+            <ProvidersList providers={providers}
+                            onSelectProvider={onSelectProvider}/>
         </div>
     )
 };

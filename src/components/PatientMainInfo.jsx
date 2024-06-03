@@ -1,27 +1,46 @@
 
 import React,{useState} from "react";
+import axios from 'axios';
 
 
-function PatientMainInfo(){
-    const [first_name, setFirstName]= useState("");
-    const [middle_name, setMiddlename] =useState("");
-    const [last_name, setLastName] =useState("");
-    const [dob, setDOB]=useState("");
-    const [streetAddress, setStreetAddress]=useState("");
-    const [city, setCity]=useState("");
-    const [stateName, setStateName]=useState("");
-    const [zip, setZip]=useState("");
-    const [insuranceName, setInsuranceName]=useState("");
-    const [policyHolderName, setPolicyHolderName]=useState("");
-    const [policyHolderDOB, setPolicyHolderDOB]=useState("");
-    const [policyNumber, setPolicyNumber]=useState("");
-    const [primaryCare, setPrimaryCare]=useState("");
-    const [primaryCarePhone, setPrimaryCarePhone]=useState("");
-    const [pharmacyName, setPharmacyName]=useState("");
-    const [pharmacyStreetAddress, setPharmacyStreetAddress]= useState("");
-    const [pharmacyCity, setPharmacyCity] = useState("");
-    const [pharmacyState, setParmacyState] = useState("");
-    const [pharmacyZip, setPharmacyZip] = useState("");
+function PatientMainInfo({userDetails,onUpdateUserDetails, user}){
+    const [first_name, setFirstName]= useState(userDetails.first_name);
+    const [middle_name, setMiddlename] =useState(userDetails.middle_name);
+    const [last_name, setLastName] =useState(userDetails.last_name);
+    const [dob, setDOB]=useState(userDetails.dob);
+    const [streetAddress, setStreetAddress]=useState(userDetails.streetAddress);
+    const [city, setCity]=useState(userDetails.city);
+    const [stateName, setStateName]=useState(userDetails.stateName);
+    const [zip, setZip]=useState(userDetails.zip);
+    const [insuranceName, setInsuranceName]=useState(userDetails.insuranceName);
+    const [policyHolderName, setPolicyHolderName]=useState(userDetails.policyHolderName);
+    const [policyHolderDOB, setPolicyHolderDOB]=useState(userDetails.setPolicyHolderDOB);
+    const [policyNumber, setPolicyNumber]=useState(userDetails.policyNumber);
+    const [primaryCare, setPrimaryCare]=useState(userDetails.primaryCare);
+    const [primaryCarePhone, setPrimaryCarePhone]=useState(userDetails.primaryCarePhone);
+    const [pharmacyName, setPharmacyName]=useState(userDetails.pharmacyName);
+    const [pharmacyStreetAddress, setPharmacyStreetAddress]= useState(userDetails.pharmacyStreetAddress);
+    const [pharmacyCity, setPharmacyCity] = useState(userDetails.setPharmacyCity);
+    const [pharmacyState, setParmacyState] = useState(userDetails.pharmacyState);
+    const [pharmacyZip, setPharmacyZip] = useState(userDetails.pharmacyZip);
+
+
+
+    const handleSubmit = async () => {
+        const details = {first_name, middle_name, last_name, dob, streetAddress, city, stateName, zip, insuranceName, policyHolderName, policyHolderDOB, policyNumber, primaryCare, primaryCarePhone, pharmacyName, pharmacyStreetAddress, pharmacyCity, pharmacyState, pharmacyZip}
+
+        try{
+            const url = `http://127.0.0.1:8000/${user.user}/profile`;
+            const response = await axios.post(url, details);
+            if(response.status === 200){
+                onUpdateUserDetails(response.data)
+            }else {
+                alert ("There was a problem saving the user profile")
+            }
+        }catch(error){
+            console.log('Error saving changes')
+        }
+    }
 
 
     return(
@@ -99,6 +118,7 @@ function PatientMainInfo(){
             <button
             onClick={e=>{
                 e.preventDefault();
+                handleSubmit()
             }}>Save</button>
 
         </form>
